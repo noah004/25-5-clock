@@ -1,0 +1,36 @@
+.to-do {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
+  max-width: 100%;
+}
+
+.tasks-title {
+  text-align: center;
+}
+
+.check-mark {
+  height: 10px;
+}
+
+img {
+  height: 20px;
+  align-self: center;
+  border-radius: 10px;
+  transition: background-color 1s;
+  transition-timing-function: cubic-bezier();
+  cursor: pointer;
+}
+
+.task-complete {
+  background-color: greenyellow;
+}
+
+img:hover.task-incomplete {
+  background-color: greenyellow;
+}
+
+img:hover.task-complete {
+  background-color: rgba(255, 0, 0, 0.553);
+}
