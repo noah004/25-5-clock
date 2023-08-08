@@ -44,3 +44,21 @@
 .timer-controls button:hover {
   background-color: #0056b3;
 }
+
+.flow-selector {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 5px;
+  margin-top: 10px;
+}
+
+.current-flow {
+  grid-column: 1 / 3;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.toggle-flow {
+  grid-column: 1/3;
+}
