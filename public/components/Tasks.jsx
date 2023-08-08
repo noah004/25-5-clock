@@ -7,32 +7,6 @@ export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [areTasksComplete, setAreTaskComplete] = useState([]);
 
-  function renderTasks(tasks) {
-    let renderedTasks = [];
-    for (let index in tasks) {
-      let isComplete = areTasksComplete[index];
-      let checkMarkImage = isComplete
-        ? "../images/check-mark.svg"
-        : "../images/circle.svg";
-      let temp = (
-        <li className="list-group-item">
-          {areTasksComplete[index] ? <s>{tasks[index]}</s> : tasks[index]}
-          <img
-            onClick={() => handleClick(index)}
-            className={
-              areTasksComplete[index]
-                ? "float-end task-complete"
-                : "float-end task-incomplete"
-            }
-            src={checkMarkImage}
-          />
-        </li>
-      );
-      renderedTasks.push(temp);
-    }
-    return renderedTasks;
-  }
-
   const keyDownHandler = (event) => {
     if (event.key === "Enter" && inputTask != "") {
       let updatedTasks = [...tasks, inputTask];
