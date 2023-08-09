@@ -4,10 +4,11 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-top: 2%;
 }
 
 .timer-display {
-  font-size: 5rem;
+  font-size: 6rem;
   margin-bottom: 0px;
 }
 
@@ -49,7 +50,6 @@
   display: grid;
   grid-template-columns: auto auto auto;
   column-gap: 5px;
-  margin-top: 10px;
 }
 
 .current-flow {
@@ -57,6 +57,12 @@
   text-align: center;
   margin-top: 0;
   margin-bottom: 10px;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  max-width: 50ch;
+  max-height: 5.9ch;
+  overflow: scroll;
 }
 
 .toggle-flow {

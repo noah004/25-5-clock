@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "../styles/Timer.css";
+import alarmSound from "../sounds/retro-alarm.wav";
 
-const Timer = () => {
+const Timer = ({ currentTask }) => {
   const [time, setTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [inputTime, setInputTime] = useState({
@@ -23,11 +24,18 @@ const Timer = () => {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (time === 0) {
+    } else if (isActive && time === 0) {
       setIsActive(false);
+      const audio = new Audio(alarmSound);
+      audio.play();
+      setTimeout(() => {
+        audio.pause();
+      }, 3000);
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [isActive, time, inputTime, flow, isPaused]);
 
   const renderFlow = (flow) => {
@@ -95,8 +103,12 @@ const Timer = () => {
         </button>
       </div>
       <div className="timer-display">{formatTime(time)}</div>
-      <h5 className="current-flow">{renderFlow(flow)}</h5>
-      <button className="btn btn-primary toggle-flow">Auto Switch</button>
+      <h5 className="current-flow">
+        {renderFlow(flow)}
+        {currentTask.name && flow == "work" ? "ing on: " : ""}
+        {currentTask.name && flow == "work" ? <br /> : ""}
+        {currentTask.name && flow == "work" ? currentTask.name : ""}
+      </h5>
       <div className="timer-controls">
         {!isActive && !isPaused ? (
           <>

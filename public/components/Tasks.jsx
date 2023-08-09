@@ -1,7 +1,7 @@
 import "../styles/Tasks.css";
 import { useState } from "react";
 
-export default function Tasks() {
+export default function Tasks({ currentTask, setCurrentTask }) {
   const [inputTask, setInputTask] = useState("");
   const [taskList, setTaskList] = useState([]);
 
@@ -13,13 +13,22 @@ export default function Tasks() {
     }
   };
 
-  const toggleComplete = (index) => {
+  const toggleComplete = (event, index) => {
     const updatedTaskList = [...taskList];
     updatedTaskList[index].isComplete = !updatedTaskList[index].isComplete;
     setTaskList(updatedTaskList);
+    if (currentTask === taskList[index] && taskList[index].isComplete)
+      toggleCurrentTask(taskList[index]);
+    event.stopPropagation();
+  };
+
+  const toggleCurrentTask = (task) => {
+    if (!task.isComplete) setCurrentTask(currentTask === task ? {} : task);
+    else setCurrentTask({});
   };
 
   const deleteTask = (index) => {
+    if (taskList[index] === currentTask) toggleCurrentTask(taskList[index]);
     const updatedTaskList = [...taskList];
     updatedTaskList.splice(index, 1);
     setTaskList(updatedTaskList);
@@ -48,21 +57,27 @@ export default function Tasks() {
 
   return (
     <div className="to-do">
-      <h3 className="tasks-title">Tasks</h3>
+      <h1 className="tasks-title">Tasks</h1>
       <ul className="list-group">
-        <div className="grid-container text-center">
+        <div className="grid-container text-center ">
           {taskList.map((task, index) => (
             <>
-              <div className="g-col-4">
-                <img
-                  onClick={() => deleteTask(index)}
-                  src="../images/delete.svg"
-                />
+              <div
+                onClick={() => deleteTask(index)}
+                className="left-col g-col-4"
+              >
+                <img src="../images/delete.svg" />
               </div>
               <div className="g-col-6">
                 <li
                   key={index}
                   className="list-group-item d-flex justify-content-between align-items-center"
+                  style={
+                    currentTask === task
+                      ? { backgroundColor: "rgba(224, 235, 242, 0.623)" }
+                      : null
+                  }
+                  onClick={() => toggleCurrentTask(task)}
                   draggable
                   onDragStart={(e) => handleDragStart(e, index)}
                   onDragOver={handleDragOver}
@@ -71,7 +86,7 @@ export default function Tasks() {
                   {task.isComplete ? <s>{task.name}</s> : task.name}
                   <span className="badge">
                     <img
-                      onClick={() => toggleComplete(index)}
+                      onClick={(event) => toggleComplete(event, index)}
                       className={
                         task.isComplete
                           ? "float-end task-complete"
@@ -90,16 +105,16 @@ export default function Tasks() {
             </>
           ))}
         </div>
+        <li className="list-group-item d-flex align-items-center input">
+          <input
+            type="text"
+            placeholder="Add Task"
+            value={inputTask}
+            onChange={(input) => setInputTask(input.target.value)}
+            onKeyDown={keyDownHandler}
+          />
+        </li>
       </ul>
-      <li className="list-group-item">
-        <input
-          type="text"
-          placeholder="Add Task"
-          value={inputTask}
-          onChange={(input) => setInputTask(input.target.value)}
-          onKeyDown={keyDownHandler}
-        />
-      </li>
     </div>
   );
 }

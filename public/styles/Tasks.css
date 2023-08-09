@@ -1,10 +1,10 @@
 .to-do {
   display: grid;
-  justify-self: center;
-  align-self: center;
   justify-content: center;
+  justify-items: center;
   align-items: center;
-  max-width: 100%;
+  max-height: 60vh;
+  overflow: scroll;
 }
 
 .tasks-title {
@@ -31,14 +31,57 @@ img:hover.task-incomplete {
   background-color: greenyellow;
 }
 
-img:hover.task-complete {
-  background-color: rgba(255, 0, 0, 0.553);
-}
-
 .grid-container {
+  font-size: larger;
+  min-width: 40vw;
+  max-width: 60ch;
   display: grid;
   grid-template-columns: 20px auto;
   align-items: center;
   justify-self: center;
+}
+
+.list-group-item {
+  padding: 0;
+  padding-left: 10px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  min-height: 3ch;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  max-height: 10ch;
+  overflow: scroll;
+}
+
+input {
+  width: 100%;
+  border: none;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+input[type="text"]:focus {
+  outline: none;
+}
+
+.delete-task {
+  background-color: chocolate;
+}
+
+.left-col {
   background-color: aliceblue;
+  height: calc(100% - 2px);
+  margin-top: 1px;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
+
+.left-col:hover {
+  background-color: rgba(224, 235, 242, 0.623);
+}
+
+.input {
+  margin-bottom: 20px;
 }
