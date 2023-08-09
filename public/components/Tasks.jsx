@@ -1,37 +1,29 @@
 import "../styles/Tasks.css";
-
 import { useState } from "react";
 
 export default function Tasks() {
   const [inputTask, setInputTask] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [areTasksComplete, setAreTaskComplete] = useState([]);
+  const [taskList, setTaskList] = useState([]);
 
   const keyDownHandler = (event) => {
-    if (event.key === "Enter" && inputTask != "") {
-      let updatedTasks = [...tasks, inputTask];
-      setTasks(updatedTasks);
+    if (event.key === "Enter" && inputTask !== "") {
+      const newTask = { name: inputTask, isComplete: false };
+      setTaskList([...taskList, newTask]);
       setInputTask("");
-
-      let updatedAreTasksComplete = [...areTasksComplete, false];
-      setAreTaskComplete(updatedAreTasksComplete);
     }
   };
 
-  function handleClick(index) {
-    let areTasksCompleteCopy = [...areTasksComplete];
-    if (areTasksComplete[index]) {
-      let tasksCopy = [...tasks];
-      tasksCopy.splice(index, 1);
-      setTasks(tasksCopy);
+  const toggleComplete = (index) => {
+    const updatedTaskList = [...taskList];
+    updatedTaskList[index].isComplete = !updatedTaskList[index].isComplete;
+    setTaskList(updatedTaskList);
+  };
 
-      areTasksCompleteCopy.splice(index, 1);
-      setAreTaskComplete(areTasksCompleteCopy);
-    } else {
-      areTasksCompleteCopy[index] = true;
-      setAreTaskComplete(areTasksCompleteCopy);
-    }
-  }
+  const deleteTask = (index) => {
+    const updatedTaskList = [...taskList];
+    updatedTaskList.splice(index, 1);
+    setTaskList(updatedTaskList);
+  };
 
   const handleDragStart = (e, sourceIndex) => {
     e.dataTransfer.setData("text/plain", sourceIndex);
@@ -46,17 +38,11 @@ export default function Tasks() {
     const sourceIndex = e.dataTransfer.getData("text/plain");
 
     if (sourceIndex !== targetIndex) {
-      const tasksCopy = [...tasks];
-      const areTasksCompleteCopy = [...areTasksComplete];
+      const updatedTaskList = [...taskList];
+      const [movedTask] = updatedTaskList.splice(sourceIndex, 1);
 
-      const [movedTask] = tasksCopy.splice(sourceIndex, 1);
-      const [movedTaskComplete] = areTasksCompleteCopy.splice(sourceIndex, 1);
-
-      tasksCopy.splice(targetIndex, 0, movedTask);
-      areTasksCompleteCopy.splice(targetIndex, 0, movedTaskComplete);
-
-      setTasks(tasksCopy);
-      setAreTaskComplete(areTasksCompleteCopy);
+      updatedTaskList.splice(targetIndex, 0, movedTask);
+      setTaskList(updatedTaskList);
     }
   };
 
@@ -64,32 +50,46 @@ export default function Tasks() {
     <div className="to-do">
       <h3 className="tasks-title">Tasks</h3>
       <ul className="list-group">
-        {tasks.map((task, index) => (
-          <li
-            key={index}
-            className="list-group-item"
-            draggable
-            onDragStart={(e) => handleDragStart(e, index)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, index)}
-          >
-            {areTasksComplete[index] ? <s>{task}</s> : task}
-            <img
-              onClick={() => handleClick(index)}
-              className={
-                areTasksComplete[index]
-                  ? "float-end task-complete"
-                  : "float-end task-incomplete"
-              }
-              src={
-                areTasksComplete[index]
-                  ? "../images/check-mark.svg"
-                  : "../images/circle.svg"
-              }
-              alt={areTasksComplete[index] ? "Complete" : "Incomplete"}
-            />
-          </li>
-        ))}
+        <div className="grid-container text-center">
+          {taskList.map((task, index) => (
+            <>
+              <div className="g-col-4">
+                <img
+                  onClick={() => deleteTask(index)}
+                  src="../images/delete.svg"
+                />
+              </div>
+              <div className="g-col-6">
+                <li
+                  key={index}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, index)}
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, index)}
+                >
+                  {task.isComplete ? <s>{task.name}</s> : task.name}
+                  <span className="badge">
+                    <img
+                      onClick={() => toggleComplete(index)}
+                      className={
+                        task.isComplete
+                          ? "float-end task-complete"
+                          : "float-end task-incomplete"
+                      }
+                      src={
+                        task.isComplete
+                          ? "../images/check-mark.svg"
+                          : "../images/circle.svg"
+                      }
+                      alt={task.isComplete ? "Complete" : "Incomplete"}
+                    />
+                  </span>
+                </li>
+              </div>
+            </>
+          ))}
+        </div>
       </ul>
       <li className="list-group-item">
         <input

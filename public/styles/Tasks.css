@@ -1,8 +1,9 @@
 .to-do {
   display: grid;
+  justify-self: center;
+  align-self: center;
   justify-content: center;
   align-items: center;
-  background-color: aqua;
   max-width: 100%;
 }
 
@@ -16,7 +17,6 @@
 
 img {
   height: 20px;
-  align-self: center;
   border-radius: 10px;
   transition: background-color 1s;
   transition-timing-function: cubic-bezier();
@@ -33,4 +33,12 @@ img:hover.task-incomplete {
 
 img:hover.task-complete {
   background-color: rgba(255, 0, 0, 0.553);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 20px auto;
+  align-items: center;
+  justify-self: center;
+  background-color: aliceblue;
 }
